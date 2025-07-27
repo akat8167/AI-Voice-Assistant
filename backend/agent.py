@@ -7,7 +7,9 @@ from livekit.agents import (
     llm
 )
 from livekit.agents.multimodal import MultimodalAgent
-from livekit.plugins import openai
+# from livekit.plugins import openai
+# from livekit.agents.llm import LLM
+from ollama_llm import OllamaModel
 from dotenv import load_dotenv
 from api import AssistantFnc
 from prompts import WELCOME_MESSAGE, INSTRUCTIONS, LOOKUP_VIN_MESSAGE
@@ -19,12 +21,18 @@ async def entrypoint(ctx: JobContext):
     await ctx.connect(auto_subscribe=AutoSubscribe.SUBSCRIBE_ALL)
     await ctx.wait_for_participant()
     
-    model = openai.realtime.RealtimeModel(
-        instructions=INSTRUCTIONS,
-        voice="shimmer",
-        temperature=0.8,
-        modalities=["audio", "text"]
-    )
+    # model = openai.realtime.RealtimeModel(
+    #     instructions=INSTRUCTIONS,
+    #     voice="shimmer",
+    #     temperature=0.8,
+    #     modalities=["audio", "text"]
+    # )
+    model = OllamaModel(model="mistral", temperature=0.7, voice="coqui"
+    # model = LLM(
+    # model=OllamaModel("mistral"),  # Replace with any Ollama model you want
+    # voice="coqui",                 # Optional: hook TTS backend here
+    # temperature=0.7
+)
     assistant_fnc = AssistantFnc()
     assistant = MultimodalAgent(model=model, fnc_ctx=assistant_fnc)
     assistant.start(ctx.room)
