@@ -1,4 +1,7 @@
-livekit-agents
+# livekit-agents
+# livekit-plugins-openai
+# livekit-plugins-silero
+livekit-agents==0.12.15
 livekit-plugins-openai
 livekit-plugins-silero
 python-dotenv
